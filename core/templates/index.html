@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/logo_conectrom.ico' %}" type="image/x-icon">
+    
+    <!-- link das fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- link do bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    
+    
+    <!-- link css -->
+     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <link rel="shortcut icon" href="{% static 'logo_conectrom.ico' %}" type="image/x-icon">
+    <title>Extrator de arquivos</title>   
+</head>
+<body style="background-image: url('{% static 'img/background4.jpg' %}');">
+    <!-- Flexbox container for aligning the toasts -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+    <div class="element-box">
+    <div class="d-flex flex-column align-items-center justify-content-center box-buttons">
+        <div class="element-title">
+            <div class="box-img">
+              <img class="box-img" src="{% static 'img/logo_conectrom.ico' %}" alt="">
+            </div>
+          <h4 class="text-center pt-4">Extrator de Arquivos</h4>  
+        </div>
+
+        <div class="d-flex align-items-center justify-content-around box-buttons">
+            <div>
+                <button type="button" class="botoes my-2" data-bs-toggle="modal" data-bs-target="#exampleModal1">Comprovantes - BB</button>
+                <button type="button" class="botoes my-2" data-bs-toggle="modal" data-bs-target="#exampleModal2">Recibos - SICREDI</button>
+                <button type="button" class="botoes my-2" data-bs-toggle="modal" data-bs-target="#exampleModal3">Recibos de Pagamento</button>
+            </div>
+            
+            <div>
+                <button type="button" class="botoes my-2" data-bs-toggle="modal" data-bs-target="#exampleModal4">Imposto de Renda</button>
+                <button type="button" class="botoes my-2" data-bs-toggle="modal" data-bs-target="#exampleModal5">SomaPay</button>
+                <button type="button" class="botoes my-2" data-bs-toggle="modal" data-bs-target="#exampleModal6">PDF Scanner - Folha de Ponto</button>
+            </div>
+        </div>
+        
+        <!-- messagens de feedback-->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <p {% if message.tags %} class="alert alert-{{ message.tags }} text-center"{% endif %}>{{ message }}</p>
+                {% endfor %}
+            <div>
+        {% endif %}
+    </div>
+
+    <!-- primeiro modal para tratamento de comprovantes -->
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Extrator de comprovantes - BB</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="meuFormulario1" action="{% url 'index' %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_BB.arquivo_BB.label}}
+                        </div>
+                        {{form_BB.arquivo_BB}}
+                    </div>
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_BB.path_BB.label}}
+                        </div>
+                        {{form_BB.path_BB}}
+                    </div>
+                    <input type="hidden" name="tipo_arquivo" value="1">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-fechar btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" onclick="enviarFormulario1()" class="botoes w-200 btn-primary">Extrair os arquivos</button>
+            </div>
+
+            {{form_BB.send_email.label}}
+            {{form_BB.send_email}}
+            </div>
+        </div>
+    </div>
+
+    <!-- modal para tratamento de recibos SICREDI -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Extrator de Recibos - SICREDI</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="meuFormulario2" action="{% url 'index' %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_SICREDI.arquivo_SICREDI.label}}
+                        </div>
+                        {{form_SICREDI.arquivo_SICREDI}}
+                    </div>
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_SICREDI.path_SICREDI.label}}
+                        </div>
+                        {{form_SICREDI.path_SICREDI}}
+                    </div>
+                    <input type="hidden" name="tipo_arquivo" value="2">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-fechar btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" onclick="enviarFormulario2()" class="botoes w-200 btn-primary">Extrair os arquivos</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal para tratamento de arquivo 3 -->
+    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Extrator de Recibos de pagamento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="meuFormulario3" action="{% url 'index' %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_recibos_pag.arquivo_recibos_pag.label}}
+                        </div>
+                        {{form_recibos_pag.arquivo_recibos_pag}}
+                    </div>
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_recibos_pag.path_recibos_pag.label}}
+                        </div>
+                        {{form_recibos_pag.path_recibos_pag}}
+                    </div>
+                    <input type="hidden" name="tipo_arquivo" value="3">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-fechar btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" onclick="enviarFormulario3()" class="botoes w-200 btn-primary">Extrair os arquivos</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal para tratamento de arquivo 4 -->
+    <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Extrator de Imposto de Renda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="meuFormulario4" action="{% url 'index' %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_imposto_renda.arquivo_imposto_renda.label}}
+                        </div>
+                        {{form_imposto_renda.arquivo_imposto_renda}}
+                    </div>
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_imposto_renda.path_imposto_renda.label}}
+                        </div>
+                        {{form_imposto_renda.path_imposto_renda}}
+                    </div>
+                    <input type="hidden" name="tipo_arquivo" value="4">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-fechar btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" onclick="enviarFormulario4()" class="botoes w-200 btn-primary">Extrair os arquivos</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal para tratamento de arquivo 4 -->
+    <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel5" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Extrator - SomaPay</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="meuFormulario5" action="{% url 'index' %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_somapay.arquivo_somapay.label}}
+                        </div>
+                        {{form_somapay.arquivo_somapay}}
+                    </div>
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_somapay.path_somapay.label}}
+                        </div>
+                        {{form_somapay.path_somapay}}
+                    </div>
+                    <input type="hidden" name="tipo_arquivo" value="5">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-fechar btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" onclick="enviarFormulario5()" class="botoes w-200 btn-primary">Extrair os arquivos</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- modal para tratamento de arquivo 4 -->
+     <div class="modal fade" id="exampleModal6" tabindex="-1" aria-labelledby="exampleModalLabel6" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">Extrator - PDF Scanner - FOLHA DE PONTO</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="meuFormulario6" action="{% url 'index' %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_scanner.arquivo_scanner.label}}
+                        </div>
+                        {{form_scanner.arquivo_scanner}}
+                    </div>
+                    <div class="input-element">
+                        <div class="input-element-label">
+                            {{form_scanner.path_scanner.label}}
+                        </div>
+                        {{form_scanner.path_scanner}}
+                    </div>
+                    <input type="hidden" name="tipo_arquivo" value="6">
+                </form>
+            </div>
+            <div class="alert alert-warning" role="alert">
+                <strong>Atenção!</strong> A extração por pdf scanneado não é 100%, podendo haver algumas pequenas inconsistências e pode ser um pouco demorado.
+            </div>              
+            <div class="modal-footer">
+                <button type="button" class="btn btn-fechar btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" onclick="enviarFormulario6()" class="botoes w-200 btn-primary">Extrair os arquivos</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

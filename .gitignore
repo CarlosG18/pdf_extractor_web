@@ -1,0 +1,68 @@
+# Ambiente virtual
+venv/
+env/
+ENV/
+.venv/
+.pyenv/
+
+# Arquivos Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Banco de dados local
+*.sqlite3
+
+# Arquivos de configuração locais
+*.env
+.env.*
+local_settings.py
+settings_local.py
+db.sqlite3
+
+# Arquivos do Django
+/media/
+/midia/
+/not_match/
+staticfiles/
+static/
+
+# Arquivos de migração inválidos ou desnecessários
+**/migrations/*.pyc
+**/migrations/*.pyo
+**/migrations/__pycache__/
+**/migrations/0001_initial.py
+**/migrations/000*_*.py
+
+# Node (caso use npm/yarn para assets)
+node_modules/
+
+# Arquivos de IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Test coverage
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Docker (caso esteja usando)
+*.pid
+*.seed
+*.bak
+*.swp
